@@ -1,0 +1,190 @@
+// Customized code to pull users with the most replies on recent new topics.
+
+<div id="custom_footer" class="custom_header_footer">
+
+  <div id="postersFrame">
+    <table id="topMembers">
+        <tr><th id="titleText">This week's top users</th>
+        <th class=right>Replies</th>
+        </tr>
+    </table>
+    <div id="peopleList">
+                
+    </div>
+  </div>
+</div>
+
+
+<script type='text/javascript'>
+  var companyName = 'gsfnmichelle'; Example community
+  var timeStamp = 0;
+  
+  jQuery(function() {
+    jQuery('.topic .style_picker li.idea').hide();
+    jQuery('#start_topic_box li.idea').hide();
+    jQuery('dt.idea').parent('dl').hide();
+    jQuery('.options li.style_idea').hide();
+    jQuery('#idea_viewer').hide();
+    jQuery('ul.search_style_filters li a.idea').hide();
+    jQuery.each(jQuery('li', '.crumb_select'), function(index, element) {
+      element = jQuery(element);
+      if (element.text() === 'Ideas') { 
+  element.remove();
+      }
+    });
+    jQuery.each(jQuery('a', '.style_select_box'), function(index, element) {
+      element = jQuery(element);
+      if (element.text() === 'Ideas') { 
+  element.remove();
+      }
+    });
+
+    jQuery('.style_tabs li.question a').click(function () { jQuery('#start_topic_form .prompt').html('Ask a question, start a conversation. Let\'s get you the answers you need!'); });
+    jQuery('.style_tabs li.problem a').click(function () { jQuery('#start_topic_form .prompt').html('Please submit a report of an issue that you are currently experiencing. Be as specific as possible, include error messages, social network and which platform you are using.'); });
+    jQuery('.style_tabs li.praise a').click(function () { jQuery('#start_topic_form .prompt').html('What makes you happy?'); });
+    jQuery('.style_tabs li.question a').click();
+
+    jQuery('#custom_login span a:first-child').text('My community account');
+    jQuery('#custom_login span').html(jQuery('#custom_login span').html().replace('or', '|'));
+
+    var obj;
+    var today = new Date();
+    var lastWeek = new Date(today.getTime() - 1000 * 60 * 60 * 24 * 7);
+    timeStamp = lastWeek.getTime() / 1000;
+    
+    obj=new JSONscriptRequest('https://api.getsatisfaction.com/companies/' + companyName + '/topics.json?sort=recently_active&limit=30&active_since=' + timeStamp + '&callback=processAllTopics');
+    obj.buildScriptTag(); // Build the script tag     
+    obj.addScriptTag(); // Execute (add) the script tag
+
+    if (jQuery("div.community_topic_box").size() > 0)  // Only true for the front page
+    {
+        jQuery("#postersFrame").insertAfter(".community_stats");
+    }
+    else
+    {
+        jQuery("#postersFrame").hide();
+    }
+  });
+
+var people = new Array();
+var processedPages = 0;
+var repliesToBeHandled = 0;
+var totalPages = 0;
+
+// Generic JSON functions
+function JSONscriptRequest(fullUrl) {
+    this.fullUrl = fullUrl; 
+    this.headLoc = document.getElementsByTagName("head").item(0);
+    this.scriptId = 'YJscriptId' + JSONscriptRequest.scriptCounter++;
+}
+JSONscriptRequest.scriptCounter = 1;
+JSONscriptRequest.prototype.buildScriptTag = function () {
+    this.scriptObj = document.createElement("script");
+    this.scriptObj.setAttribute("type", "text/javascript");
+    this.scriptObj.setAttribute("src", this.fullUrl);
+    this.scriptObj.setAttribute("id", this.scriptId);
+}
+JSONscriptRequest.prototype.removeScriptTag = function () {
+    this.headLoc.removeChild(this.scriptObj);  
+}
+JSONscriptRequest.prototype.addScriptTag = function () {
+    this.headLoc.appendChild(this.scriptObj);
+}
+
+function processAllTopics(results) {      
+    var obj;
+    if ( results.total > 0)
+    {
+        var htmlToAdd = '';
+  totalPages = results.total / 30;
+  for (var pageNum=0; pageNum < totalPages; pageNum++)
+  {
+    obj=new JSONscriptRequest('https://api.getsatisfaction.com/companies/' + companyName + '/topics.json?sort=recently_active&active_since=' + timeStamp + '&limit=30&page=' + (pageNum+1) + '&callback=processEachTopic');
+    obj.buildScriptTag(); // Build the script tag     
+    obj.addScriptTag(); // Execute (add) the script tag
+  }
+    }
+    jQuery('#peopleList').html('Loading member details...')
+}
+
+function processEachTopic(results) {  
+    if ( results.data.length > 0)
+    {
+      for(var i=0; i<results.data.length; i++)
+      {
+  if (results.data[i].active_replies > 0)
+  {
+     obj=new JSONscriptRequest( results.data[i].url + '/replies.json?callback=processEachTopicReplies');     
+           obj.buildScriptTag(); // Build the script tag     
+     obj.addScriptTag(); // Execute (add) the script tag
+     repliesToBeHandled++;
+  }
+      }
+    }
+    processedPages++;
+}
+  
+function processEachTopicReplies(results) {      
+    if ( results.data.length > 0)
+    {
+      for(var i=0; i<results.data.length; i++)
+      {
+  var ts = new Date(results.data[i].created_at);
+        if ((!results.data[i].author.employee) && (ts.getTime()/1000 > timeStamp))
+  {
+    peopleIdx = isInArray(results.data[i].author.canonical_name)
+    
+    if (peopleIdx >= 0) // if author is already in people[] array, increment the number of activity
+    {
+      people[peopleIdx][0]++;
+    } else {
+      // add new element to array, and initialize the number of activities to 1
+      people[people.length] = [1, results.data[i].author.canonical_name, results.data[i].author.at_sfn, results.data[i].author.name];
+    }
+  }
+      }
+    }
+    repliesToBeHandled--;
+    if ((processedPages >= totalPages - 1) && (repliesToBeHandled <= 0 ))
+    {
+        var htmlToAdd = '';
+        people.sort(compareTotals);
+        
+  people.remove(0);
+  
+        var peopleLimit = people.length;
+        if (peopleLimit > 10)
+          peopleLimit = 10;
+
+        for (var i = 0; i < peopleLimit; i++)
+        {
+          htmlToAdd = htmlToAdd + '<div class=numReplies>' + people[i][0] + '</div><div class="peopleLink"><a href="' + people[i][2] + '">' + people[i][3] + '</a></div>';
+        }
+        jQuery('#peopleList').html(htmlToAdd);
+    }
+}
+
+// returns the Index of the person in the people[] array, or -1 if the person is not in the array
+function isInArray(name)
+{
+  for(var i=0; i< people.length; i++)
+  {
+    if (people[i][1] == name)
+    {
+      return i;
+    }
+  }
+  return -1;
+}
+
+function compareTotals(a, b) {
+    return b[0] - a[0];
+}
+
+Array.prototype.remove = function(from, to) {
+  var rest = this.slice((to || from) + 1 || this.length);
+  this.length = from < 0 ? this.length + from : from;
+  return this.push.apply(this, rest);
+};
+
+</script>

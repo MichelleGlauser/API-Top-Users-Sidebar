@@ -1,0 +1,138 @@
+Header Tag for Top Users Hack
+
+<style type="text/css"> 
+body {background-color: white; } 
+#toolbar {display: none; } 
+.custom_header_footer { color: #ccc; background-color: #aaa; width:950px; height:60px; padding:15px; margin: 0 auto 0 auto; } 
+
+#wrapper #page { background-image: url(''); background-repeat:repeat; padding-bottom: 0; } 
+#header { background-image: url('') !important; background-repeat:repeat-x; } 
+#container { margin-top: 0px; clear: both; } 
+#sub_header { display: none; } 
+
+#custom_header { 
+background-position: bottom center; 
+min-height: 169px; 
+background-image: ; 
+background-repeat: no-repeat; 
+} 
+
+#custom_login { color: #777777; } 
+#custom_login a { color: #777777; } 
+
+.custom_header_footer { background-color: transparent !important; } 
+
+#sidebar { background-image: url(''); } 
+
+#customized_footer { background-image: url(''); margin-top: 30px; } 
+.logo { display: block; position: absolute; top: 10px; width: 120px; height: 30px; } 
+.get-sat-home { display: block; position: absolute; top: 95px; width: 575px; height: 50px; } 
+.logo2 { display: block; position: absolute; top: 269px; width: 120px; height: 30px; } 
+.get-sat-home2 { display: block; position: absolute; top: 95px; width: 575px; height: 50px; } 
+
+#tags_validatable 
+
+
+#company_header, #company_tabs, #sub_header { 
+width: 948px; 
+margin: 0 auto; 
+padding: 20px 15px; 
+position: relative; 
+background-color: white; 
+border: 1px solid #c1c1c1; 
+border-top: 2px solid #ddd; } 
+#sub_header2 { 
+width: 948px; 
+height: 26px; 
+margin: 30px auto 0 auto; 
+padding: 20px 15px; 
+position: relative; 
+background-color: white; 
+border: 1px solid #c1c1c1; } 
+
+#sub_header2 { 
+z-index: 3; 
+border-bottom: 0; 
+margin-bottom: -1px; 
+border-top-left-radius: 5px; 
+-moz-border-radius-topleft: 5px; 
+-webkit-border-top-left-radius: 5px; 
+border-top-right-radius: 5px; 
+-moz-border-radius-topright: 5px; 
+-webkit-border-top-right-radius: 5px; } 
+#sub_header2 #tagline { 
+font-weight: bold; 
+font-size: 1.5em; 
+font-weight: 500; } 
+#sub_header2 #community_participation { 
+color: #888888; } 
+
+#sub_header2 #community_participation, #sub_header2 #tagline { 
+background-color: white; 
+width: 600px; 
+float:left;} 
+
+#headerbuttons { 
+float: right; 
+position: absolute; top: 16px; left: 473px; width: 600px; 
+} 
+
+.headerbtn { 
+position: relative; top: 0px; padding-right: 20px; 
+} 
+
+#community_description, #support_channels, #facebook_likebox, #gsfn_sidebar_message { display: none;} 
+
+.community_creator { display: none;} 
+
+#company_tabs #company_topic_search { 
+width: 305px; 
+border-radius: 2px; 
+-webkit-border-radius: 2px; 
+} 
+
+#sidebar #community_info_sidebar {padding-top: 0px} 
+
+#company_tabs {padding: 8px 15px 5px 15px; } 
+
+#sub_header2 #tagline {padding-top: 3px; } 
+
+/* 
+#community_topics .topic_set.questions .head {background-color: #003267;} 
+#community_topics .topic_set.problems .head {background-color: #881111;} 
+#community_topics .topic_set.praise .head {background-color: #227722;} 
+#container #content #community_topics #question_viewer h2 {color: #fff;} 
+#container #content #community_topics #problem_viewer h2 {color: #fff;} 
+#container #content #community_topics #praise_viewer h2 {color: #fff;} 
+*/ 
+
+
+#postersFrame 
+{ 
+padding-top:10px; 
+padding-bottom:10px; 
+margin: 0 -12px; 
+} 
+
+#postersFrame table tr th { 
+color: #777777; 
+padding: 3px 12px; 
+border-bottom: 2px solid #dddddd; 
+font-size: 80%; 
+text-transform: uppercase; } 
+#postersFrame table tr th.right { text-align: right; } 
+
+#topMembers { width: 100%; } 
+#peopleList { padding:12px; } 
+.peopleLink { padding-top: 2px; } 
+.numReplies { float: right; } 
+
+.mini_profile_icon.employee .label {background-image: url(http://i.imgur.com/x9Qqb.png);} 
+.mini_profile_icon.employee {border-color: #264bc0;} 
+
+.mini_profile_icon.champion .label {background-image: url(http://i.imgur.com/94ozu.png);} 
+.mini_profile_icon.champion .badge {display: none; } 
+.mini_profile_icon.champion {border-color: #22aa22;} 
+
+
+</style> 
